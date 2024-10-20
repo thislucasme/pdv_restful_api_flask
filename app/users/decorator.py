@@ -6,7 +6,7 @@ import os
 
 secret_key = os.getenv("SECRET_KEY")
 
-def current_user(f):
+def authenticated_user(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
@@ -20,7 +20,7 @@ def current_user(f):
         
         try:
             data = jwt.decode(token, secret_key, algorithms=["HS256"])
-            kwargs['user'] = data['user']
+            kwargs['user'] = data
         except jwt.ExpiredSignatureError:
             return jsonify({'message': 'Token expirado!'}), 401
         except jwt.InvalidTokenError:

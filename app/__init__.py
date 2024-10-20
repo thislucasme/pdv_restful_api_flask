@@ -1,7 +1,9 @@
 from flask import Flask
 from app.extention import mongo
 from flask_pymongo import PyMongo
+from app.users.routes import users_bp
 from app.auth.routes import auth_bp
+from app.produto.routes import produto_bp
 from app.erros import not_found
 from dotenv import load_dotenv
 import os
@@ -17,7 +19,8 @@ def create_app():
     mongo.init_app(app)
 
     app.register_blueprint(auth_bp, url_prefix='/auth')
-
+    app.register_blueprint(users_bp, url_prefix='/users')
+    app.register_blueprint(produto_bp, url_prefix='/produtos')
     app.register_error_handler(404, not_found)
 
     return app
